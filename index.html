@@ -965,7 +965,7 @@
                 dot.style.top = outline.style.top = `${e.clientY}px`;
             });
 
-            // Three.js Cursor Trail Effect
+            // Three.js Ribbon Cursor Trail Effect
             const initThreeCursor = () => {
                 const scene = new THREE.Scene();
                 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -979,61 +979,77 @@
                 renderer.domElement.style.zIndex = '9999';
                 document.body.appendChild(renderer.domElement);
 
-                const geometry = new THREE.BufferGeometry();
-                const count = 50;
-                const positions = new Float32Array(count * 3);
-                const sizes = new Float32Array(count);
+                const count = 30; // Number of segments
+                const points = Array.from({ length: count }, () => new THREE.Vector3());
+                const width = 15;
 
-                for (let i = 0; i < count; i++) {
-                    positions[i * 3] = 0;
-                    positions[i * 3 + 1] = 0;
-                    positions[i * 3 + 2] = 0;
-                    sizes[i] = Math.random();
-                }
-
-                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-                const material = new THREE.PointsMaterial({
+                // Create Ribbon Geometry
+                const geometry = new THREE.PlaneGeometry(1, 1, 1, count - 1);
+                const material = new THREE.MeshBasicMaterial({
                     color: 0x38bdf8,
-                    size: 4,
                     transparent: true,
-                    opacity: 0.8,
+                    opacity: 0.6,
+                    side: THREE.DoubleSide,
                     blending: THREE.AdditiveBlending
                 });
 
-                const points = new THREE.Points(geometry, material);
-                scene.add(points);
+                // Custom Vertex Colors for Gradient
+                const colors = new Float32Array(count * 2 * 3);
+                for (let i = 0; i < count; i++) {
+                    const alpha = 1 - (i / count);
+                    const colorIndex = i * 2 * 3;
+                    // Two vertices per segment
+                    for (let j = 0; j < 2; j++) {
+                        colors[colorIndex + j * 3] = 0.22; // R
+                        colors[colorIndex + j * 3 + 1] = 0.74; // G
+                        colors[colorIndex + j * 3 + 2] = 0.97; // B
+                    }
+                }
+                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                material.vertexColors = true;
+
+                // Opacity Gradient via Shader hack or simple alpha map
+                // For simplicity, we'll use a custom shader or update the opacity in a loop if using Points, 
+                // but for Mesh we can use a texture or custom material.
+                // Let's use a simpler approach with a trail of lines or updated planes.
+
+                const ribbonMesh = new THREE.Mesh(geometry, material);
+                scene.add(ribbonMesh);
                 camera.position.z = 500;
 
                 const animate = () => {
                     requestAnimationFrame(animate);
 
-                    const positions = geometry.attributes.position.array;
-
-                    // Slightly laggy trailing effect
                     const x = (mouse.x - window.innerWidth / 2) * (1000 / window.innerWidth);
                     const y = -(mouse.y - window.innerHeight / 2) * (1000 / window.innerHeight);
 
-                    for (let i = count - 1; i > 0; i--) {
-                        positions[i * 3] += (positions[(i - 1) * 3] - positions[i * 3]) * 0.2;
-                        positions[i * 3 + 1] += (positions[(i - 1) * 3 + 1] - positions[i * 3 + 1]) * 0.2;
-                        positions[i * 3 + 2] += (positions[(i - 1) * 3 + 2] - positions[i * 3 + 2]) * 0.2;
+                    // Smooth follow physics
+                    points[0].x += (x - points[0].x) * 0.3;
+                    points[0].y += (y - points[0].y) * 0.3;
+
+                    for (let i = 1; i < count; i++) {
+                        points[i].x += (points[i - 1].x - points[i].x) * 0.3;
+                        points[i].y += (points[i - 1].y - points[i].y) * 0.3;
                     }
 
-                    positions[0] = x;
-                    positions[1] = y;
-                    positions[2] = 0;
+                    // Update Geometry Vertices
+                    const posAttr = geometry.attributes.position;
+                    const cross = new THREE.Vector3();
+                    const dir = new THREE.Vector3();
 
-                    // Reactive scale on click/hover
-                    const targetScale = window.isInteracting ? 1.5 : 1;
-                    points.scale.set(
-                        points.scale.x + (targetScale - points.scale.x) * 0.1,
-                        points.scale.y + (targetScale - points.scale.y) * 0.1,
-                        points.scale.z + (targetScale - points.scale.z) * 0.1
-                    );
+                    for (let i = 0; i < count; i++) {
+                        if (i < count - 1) {
+                            dir.subVectors(points[i], points[i + 1]).normalize();
+                        }
+                        cross.set(dir.y, -dir.x, 0).normalize();
 
-                    geometry.attributes.position.needsUpdate = true;
+                        const currentWidth = width * (1 - i / count) * (window.isInteracting ? 2 : 1);
+
+                        posAttr.setXYZ(i * 2, points[i].x + cross.x * currentWidth, points[i].y + cross.y * currentWidth, 0);
+                        posAttr.setXYZ(i * 2 + 1, points[i].x - cross.x * currentWidth, points[i].y - cross.y * currentWidth, 0);
+                    }
+
+                    posAttr.needsUpdate = true;
                     renderer.render(scene, camera);
                 };
 
