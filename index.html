@@ -258,6 +258,31 @@
 
         .project-info-new {
             padding: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-card-v2 {
+            position: relative;
+        }
+
+        .project-card-v2::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(56, 189, 248, 0.08), transparent 40%);
+            border-radius: inherit;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 3;
+        }
+
+        .project-card-v2:hover::before {
+            opacity: 1;
         }
 
         /* Preloader */
@@ -447,16 +472,16 @@
     <nav class="navbar">
         <div class="logo">Mansi Zala</div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#home" class="magnetic">Home</a></li>
+            <li><a href="#about" class="magnetic">About</a></li>
+            <li><a href="#services" class="magnetic">Services</a></li>
+            <li><a href="#projects" class="magnetic">Projects</a></li>
+            <li><a href="#contact" class="magnetic">Contact</a></li>
         </ul>
-        <button id="themeToggle" class="theme-toggle" title="Toggle Theme">
+        <button id="themeToggle" class="theme-toggle magnetic" title="Toggle Theme">
             <i class="fas fa-moon"></i>
         </button>
-        <button id="adminPanelTrigger" class="theme-toggle"
+        <button id="adminPanelTrigger" class="theme-toggle magnetic"
             style="display: none; background: var(--accent-glow); color: #000;" onclick="addNewProject()"
             title="Add Project">
             <i class="fas fa-plus"></i>
@@ -810,10 +835,77 @@
             // AOS
             AOS.init({ duration: 1000, once: true });
 
-            // GSAP Animations
+            // GSAP ScrollTrigger & Section Reveals
+            gsap.registerPlugin(ScrollTrigger);
+
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                gsap.from(section, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1.2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+
+            // Parallax Orbs
+            gsap.to(".glow-orb-large, .glow-orb", {
+                y: (i, target) => -ScrollTrigger.maxScroll(window) * (i === 0 ? 0.1 : 0.2),
+                ease: "none",
+                scrollTrigger: {
+                    start: 0,
+                    end: "max",
+                    scrub: true
+                }
+            });
+
+            // Floating Orbs Animation (Random)
             gsap.to(".glow-orb-large, .glow-orb", {
                 x: "random(-100, 100)", y: "random(-100, 100)",
-                duration: 10, repeat: -1, yoyo: true, ease: "sine.inOut"
+                duration: 15, repeat: -1, yoyo: true, ease: "sine.inOut"
+            });
+
+            // Magnetic Buttons Effect
+            const magneticElements = document.querySelectorAll('.magnetic, .btn');
+            magneticElements.forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    gsap.to(el, {
+                        x: x * 0.3,
+                        y: y * 0.3,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                });
+                el.addEventListener('mouseleave', () => {
+                    gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+                });
+            });
+
+            // Stat Counter Animation
+            const stats = document.querySelectorAll('.stat-item h4');
+            stats.forEach(stat => {
+                const target = parseInt(stat.innerText);
+                const suffix = stat.innerText.replace(/[0-9]/g, '');
+                gsap.from(stat, {
+                    innerText: 0,
+                    duration: 2,
+                    snap: { innerText: 1 },
+                    scrollTrigger: {
+                        trigger: stat,
+                        start: "top 90%",
+                    },
+                    onUpdate: function () {
+                        stat.innerText = Math.ceil(this.targets()[0].innerText) + suffix;
+                    }
+                });
             });
 
             gsap.utils.toArray('.gsap-progress').forEach(p => {
@@ -919,23 +1011,37 @@
 
                     const positions = geometry.attributes.position.array;
 
-                    // Convert mouse to Three.js coordinates
+                    // Slightly laggy trailing effect
                     const x = (mouse.x - window.innerWidth / 2) * (1000 / window.innerWidth);
                     const y = -(mouse.y - window.innerHeight / 2) * (1000 / window.innerHeight);
 
                     for (let i = count - 1; i > 0; i--) {
-                        positions[i * 3] = positions[(i - 1) * 3];
-                        positions[i * 3 + 1] = positions[(i - 1) * 3 + 1];
-                        positions[i * 3 + 2] = positions[(i - 1) * 3 + 2];
+                        positions[i * 3] += (positions[(i - 1) * 3] - positions[i * 3]) * 0.2;
+                        positions[i * 3 + 1] += (positions[(i - 1) * 3 + 1] - positions[i * 3 + 1]) * 0.2;
+                        positions[i * 3 + 2] += (positions[(i - 1) * 3 + 2] - positions[i * 3 + 2]) * 0.2;
                     }
 
                     positions[0] = x;
                     positions[1] = y;
                     positions[2] = 0;
 
+                    // Reactive scale on click/hover
+                    const targetScale = window.isInteracting ? 1.5 : 1;
+                    points.scale.set(
+                        points.scale.x + (targetScale - points.scale.x) * 0.1,
+                        points.scale.y + (targetScale - points.scale.y) * 0.1,
+                        points.scale.z + (targetScale - points.scale.z) * 0.1
+                    );
+
                     geometry.attributes.position.needsUpdate = true;
                     renderer.render(scene, camera);
                 };
+
+                window.isInteracting = false;
+                document.querySelectorAll('a, button, .bento-item, .project-card-v2').forEach(el => {
+                    el.addEventListener('mouseenter', () => window.isInteracting = true);
+                    el.addEventListener('mouseleave', () => window.isInteracting = false);
+                });
 
                 window.addEventListener('resize', () => {
                     camera.aspect = window.innerWidth / window.innerHeight;
@@ -999,16 +1105,27 @@
                     card.innerHTML = `
                         <div class="project-media">
                             <img src="${p.image}" alt="${p.title}">
+                            <div class="hover-glow"></div>
                         </div>
                         <div class="project-info-new">
                             <div class="tech-stack">${p.tech.map(t => `<span>${t}</span>`).join('')}</div>
                             <h3>${p.title}</h3>
                             <div class="admin-actions" style="display: none; margin-top: 15px; gap: 10px;">
-                                <button onclick="editProject(${p.id})" style="background: var(--accent-glow); color: #000; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Edit</button>
-                                <button onclick="deleteProject(${p.id})" style="background: #ff4444; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Delete</button>
+                                <button class="btn" onclick="editProject(${p.id})" style="background: var(--accent-glow); color: #000; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">Edit</button>
+                                <button class="btn" onclick="deleteProject(${p.id})" style="background: #ff4444; color: #fff; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">Delete</button>
                             </div>
                         </div>
                     `;
+
+                    // Card Hover Glow Logic
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        card.style.setProperty('--mouse-x', `${x}px`);
+                        card.style.setProperty('--mouse-y', `${y}px`);
+                    });
+
                     grid.appendChild(card);
                 });
                 if (window.isAdmin) {
