@@ -74,10 +74,28 @@
             background: #f8fafc !important;
         }
 
-        /* Custom Cursor - Hidden for 3D Mesh */
-        .cursor-dot,
+        /* Professional Minimalist Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            mix-blend-mode: difference;
+        }
+
         .cursor-outline {
-            display: none !important;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.3s ease;
         }
 
         /* Navbar */
@@ -935,20 +953,27 @@
                 typeSpeed: 80, backSpeed: 50, loop: true
             });
 
-            // Custom Cursor with Three.js Animation
+            // Professional Minimalist Cursor Logic
             const dot = document.querySelector('.cursor-dot');
             const outline = document.querySelector('.cursor-outline');
-            const mouse = { x: 0, y: 0 };
 
             window.addEventListener('mousemove', (e) => {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-                dot.style.left = outline.style.left = `${e.clientX}px`;
-                dot.style.top = outline.style.top = `${e.clientY}px`;
+                const { clientX: x, clientY: y } = e;
+                gsap.to(dot, { x, y, duration: 0, xPercent: -50, yPercent: -50 });
+                gsap.to(outline, { x, y, duration: 0.15, xPercent: -50, yPercent: -50 });
             });
 
-            // Three.js 3D Mesh Cursor Effect
-            const initThreeCursor = () => {
+            document.querySelectorAll('a, button, .bento-item, .project-card-v2').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    gsap.to(outline, { scale: 1.5, duration: 0.3 });
+                });
+                el.addEventListener('mouseleave', () => {
+                    gsap.to(outline, { scale: 1, duration: 0.3 });
+                });
+            });
+
+            // Three.js Background Glow Orbs (Subtle)
+            const initThreeBackground = () => {
                 const scene = new THREE.Scene();
                 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -958,67 +983,14 @@
                 renderer.domElement.style.top = '0';
                 renderer.domElement.style.left = '0';
                 renderer.domElement.style.pointerEvents = 'none';
-                renderer.domElement.style.zIndex = '9999';
+                renderer.domElement.style.zIndex = '-1';
                 document.body.appendChild(renderer.domElement);
 
-                // Add Ambient Light
-                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-                scene.add(ambientLight);
-
-                // Create 3D Cursor Mesh
-                const geometry = new THREE.IcosahedronGeometry(15, 0);
-                const material = new THREE.MeshStandardMaterial({
-                    color: 0x38bdf8,
-                    emissive: 0x38bdf8,
-                    emissiveIntensity: 2,
-                    wireframe: true,
-                    transparent: true,
-                    opacity: 0.8
-                });
-                const cursorMesh = new THREE.Mesh(geometry, material);
-                scene.add(cursorMesh);
-
-                // Add Point Light to Cursor
-                const pointLight = new THREE.PointLight(0x38bdf8, 50, 100);
-                scene.add(pointLight);
-
-                camera.position.z = 500;
-
-                const cursorTarget = new THREE.Vector3();
-                const cursorActual = new THREE.Vector3();
-
-                const animate = () => {
-                    requestAnimationFrame(animate);
-
-                    // Convert Mouse to 3D Space (Screen to World)
-                    const x = (mouse.x - window.innerWidth / 2) * (1000 / window.innerWidth);
-                    const y = -(mouse.y - window.innerHeight / 2) * (1000 / window.innerHeight);
-                    cursorTarget.set(x, y, 0);
-
-                    // Smooth interpolation (lerp)
-                    cursorActual.lerp(cursorTarget, 0.2);
-
-                    cursorMesh.position.copy(cursorActual);
-                    pointLight.position.copy(cursorActual);
-
-                    // Rotating animation
-                    cursorMesh.rotation.x += 0.02;
-                    cursorMesh.rotation.y += 0.02;
-
-                    // Reactive scaling
-                    const targetScale = window.isInteracting ? 2 : 1;
-                    const lerpSpeed = 0.1;
-                    cursorMesh.scale.x += (targetScale - cursorMesh.scale.x) * lerpSpeed;
-                    cursorMesh.scale.y += (targetScale - cursorMesh.scale.y) * lerpSpeed;
-                    cursorMesh.scale.z += (targetScale - cursorMesh.scale.z) * lerpSpeed;
-
-                    renderer.render(scene, camera);
-                };
-
-                window.isInteracting = false;
-                document.querySelectorAll('a, button, .bento-item, .project-card-v2').forEach(el => {
-                    el.addEventListener('mouseenter', () => window.isInteracting = true);
-                    el.addEventListener('mouseleave', () => window.isInteracting = false);
+                // Re-enable mouse tracking for background effects if needed
+                const bgMouse = { x: 0, y: 0 };
+                window.addEventListener('mousemove', (e) => {
+                    bgMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                    bgMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
                 });
 
                 window.addEventListener('resize', () => {
@@ -1027,9 +999,10 @@
                     renderer.setSize(window.innerWidth, window.innerHeight);
                 });
 
-                animate();
+                // No active cursor mesh, just background render if desired
+                // (Keeping the Three.js architecture for future subtle background effects)
             };
-            initThreeCursor();
+            initThreeBackground();
 
             // Scroll Top
             const scrollTop = document.getElementById('scrollTop');
