@@ -778,7 +778,11 @@
     <!-- Footer -->
     <footer
         style="padding: 40px 20px; border-top: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); text-align: center;">
-        <p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 Mansi Zala. All Rights Reserved.</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem; cursor: pointer;">
+            &copy; 2026 Mansi Zala. All Rights Reserved.
+            <span id="adminLoginLink"
+                style="opacity: 0.3; margin-left: 10px; font-size: 0.7rem; text-decoration: underline;">Admin</span>
+        </p>
     </footer>
 
     <!-- Scroll to Top -->
@@ -1015,19 +1019,25 @@
 
             // Admin Logic
             window.isAdmin = false;
-            let clickCount = 0;
-            document.querySelector('footer p').addEventListener('click', () => {
+            const adminTrigger = (e) => {
                 clickCount++;
-                if (clickCount >= 5) {
+                if (clickCount >= 3) { // Lowered to 3 for easier access
                     const pass = prompt("Enter Admin Password:");
                     if (pass === "admin123") {
                         window.isAdmin = true;
                         alert("Admin Mode Activated!");
-                        document.getElementById('adminPanelTrigger').style.display = 'block';
+                        document.getElementById('adminPanelTrigger').style.display = 'flex';
+                        document.getElementById('adminLoginLink').style.display = 'none';
                         renderProjects();
                     }
                     clickCount = 0;
                 }
+            };
+            document.querySelector('footer p').addEventListener('click', adminTrigger);
+            document.getElementById('adminLoginLink').addEventListener('click', (e) => {
+                e.stopPropagation();
+                clickCount = 2; // Set to 2 so the next click (this one) triggers it
+                adminTrigger();
             });
 
             window.deleteProject = (id) => {
