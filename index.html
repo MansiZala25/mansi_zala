@@ -20,6 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 
     <style>
         /* Base styles from style.css */
@@ -207,6 +208,7 @@
         .main-title {
             background: linear-gradient(to bottom, #fff 0%, #a0a0a0 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -454,7 +456,44 @@
         <button id="themeToggle" class="theme-toggle" title="Toggle Theme">
             <i class="fas fa-moon"></i>
         </button>
+        <button id="adminPanelTrigger" class="theme-toggle"
+            style="display: none; background: var(--accent-glow); color: #000;" onclick="addNewProject()"
+            title="Add Project">
+            <i class="fas fa-plus"></i>
+        </button>
     </nav>
+
+    <!-- Admin Modal -->
+    <div id="adminModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10002; justify-content: center; align-items: center; backdrop-filter: blur(10px);">
+        <div class="glass-card" style="width: 90%; max-width: 500px; padding: 40px; position: relative;">
+            <button onclick="document.getElementById('adminModal').style.display='none'"
+                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            <h2 style="margin-bottom: 30px;">Project Manager</h2>
+            <form id="adminForm" onsubmit="saveProject(event)" class="field-wrap">
+                <input type="hidden" id="projId">
+                <div style="margin-bottom: 20px;"><input type="text" id="projTitle" placeholder="Project Title"
+                        required></div>
+                <div style="margin-bottom: 20px;"><input type="text" id="projImg" placeholder="Image URL" required>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <select id="projCat"
+                        style="width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 15px 0; color: #fff; outline: none;">
+                        <option value="web" style="background: var(--bg-dark);">Web App</option>
+                        <option value="mobile" style="background: var(--bg-dark);">Mobile</option>
+                        <option value="graphics" style="background: var(--bg-dark);">Design</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 30px;"><input type="text" id="projTech"
+                        placeholder="Tech Stack (comma separated)" required></div>
+                <button type="submit" class="submit-btn-minimal" style="width: 100%; padding: 15px;">Save
+                    Project</button>
+                <button type="button" onclick="exportHTML()"
+                    style="width: 100%; padding: 15px; margin-top: 10px; background: var(--text-muted); color: #fff; border: none; border-radius: 5px; cursor: pointer;">Export
+                    Permanent HTML</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main>
@@ -677,52 +716,9 @@
                     <button class="filter-btn" data-filter="mobile">Mobile</button>
                     <button class="filter-btn" data-filter="graphics">Design</button>
                 </div>
-                <div class="projects-grid"
+                <div class="projects-grid" id="projectsGrid"
                     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
-                    <!-- Project 1 -->
-                    <div class="project-card-v2" data-category="web" data-aos="fade-up">
-                        <div class="project-media">
-                            <img src="https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800"
-                                alt="E-commerce Project">
-                        </div>
-                        <div class="project-info-new">
-                            <div class="tech-stack"><span>Laravel</span><span>PHP</span><span>MySQL</span></div>
-                            <h3>Enterprise E-commerce</h3>
-                        </div>
-                    </div>
-                    <!-- Project 2 -->
-                    <div class="project-card-v2" data-category="mobile" data-aos="fade-up" data-aos-delay="100">
-                        <div class="project-media">
-                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800"
-                                alt="Matrimony Project">
-                        </div>
-                        <div class="project-info-new">
-                            <div class="tech-stack"><span>Flutter</span><span>Firebase</span></div>
-                            <h3>Premium Matrimony App</h3>
-                        </div>
-                    </div>
-                    <!-- Project 3 -->
-                    <div class="project-card-v2" data-category="graphics" data-aos="fade-up" data-aos-delay="200">
-                        <div class="project-media">
-                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800"
-                                alt="Design Project">
-                        </div>
-                        <div class="project-info-new">
-                            <div class="tech-stack"><span>Photoshop</span><span>Illustrator</span></div>
-                            <h3>Brand Revamp 2024</h3>
-                        </div>
-                    </div>
-                    <!-- Project 4 -->
-                    <div class="project-card-v2" data-category="web" data-aos="fade-up">
-                        <div class="project-media">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
-                                alt="SaaS Project">
-                        </div>
-                        <div class="project-info-new">
-                            <div class="tech-stack"><span>Next.js</span><span>PostgreSQL</span></div>
-                            <h3>Analytics Dashboard</h3>
-                        </div>
-                    </div>
+                    <!-- Projects will be injected here by JavaScript -->
                 </div>
             </div>
         </section>
@@ -861,13 +857,91 @@
                 typeSpeed: 80, backSpeed: 50, loop: true
             });
 
-            // Custom Cursor
+            // Custom Cursor with Three.js Animation
             const dot = document.querySelector('.cursor-dot');
             const outline = document.querySelector('.cursor-outline');
+            const mouse = { x: 0, y: 0 };
+
             window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
                 dot.style.left = outline.style.left = `${e.clientX}px`;
                 dot.style.top = outline.style.top = `${e.clientY}px`;
             });
+
+            // Three.js Cursor Trail Effect
+            const initThreeCursor = () => {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.domElement.style.position = 'fixed';
+                renderer.domElement.style.top = '0';
+                renderer.domElement.style.left = '0';
+                renderer.domElement.style.pointerEvents = 'none';
+                renderer.domElement.style.zIndex = '9999';
+                document.body.appendChild(renderer.domElement);
+
+                const geometry = new THREE.BufferGeometry();
+                const count = 50;
+                const positions = new Float32Array(count * 3);
+                const sizes = new Float32Array(count);
+
+                for (let i = 0; i < count; i++) {
+                    positions[i * 3] = 0;
+                    positions[i * 3 + 1] = 0;
+                    positions[i * 3 + 2] = 0;
+                    sizes[i] = Math.random();
+                }
+
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+                const material = new THREE.PointsMaterial({
+                    color: 0x38bdf8,
+                    size: 4,
+                    transparent: true,
+                    opacity: 0.8,
+                    blending: THREE.AdditiveBlending
+                });
+
+                const points = new THREE.Points(geometry, material);
+                scene.add(points);
+                camera.position.z = 500;
+
+                const animate = () => {
+                    requestAnimationFrame(animate);
+
+                    const positions = geometry.attributes.position.array;
+
+                    // Convert mouse to Three.js coordinates
+                    const x = (mouse.x - window.innerWidth / 2) * (1000 / window.innerWidth);
+                    const y = -(mouse.y - window.innerHeight / 2) * (1000 / window.innerHeight);
+
+                    for (let i = count - 1; i > 0; i--) {
+                        positions[i * 3] = positions[(i - 1) * 3];
+                        positions[i * 3 + 1] = positions[(i - 1) * 3 + 1];
+                        positions[i * 3 + 2] = positions[(i - 1) * 3 + 2];
+                    }
+
+                    positions[0] = x;
+                    positions[1] = y;
+                    positions[2] = 0;
+
+                    geometry.attributes.position.needsUpdate = true;
+                    renderer.render(scene, camera);
+                };
+
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+
+                animate();
+            };
+            initThreeCursor();
 
             // Scroll Top
             const scrollTop = document.getElementById('scrollTop');
@@ -876,19 +950,154 @@
             });
             scrollTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+            // Project Data & Rendering
+            let projects = JSON.parse(localStorage.getItem('portfolio_projects')) || [
+                {
+                    id: 1,
+                    title: "Enterprise E-commerce",
+                    category: "web",
+                    image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800",
+                    tech: ["Laravel", "PHP", "MySQL"]
+                },
+                {
+                    id: 2,
+                    title: "Premium Matrimony App",
+                    category: "mobile",
+                    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
+                    tech: ["Flutter", "Firebase"]
+                },
+                {
+                    id: 3,
+                    title: "Brand Revamp 2024",
+                    category: "graphics",
+                    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
+                    tech: ["Photoshop", "Illustrator"]
+                },
+                {
+                    id: 4,
+                    title: "Analytics Dashboard",
+                    category: "web",
+                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
+                    tech: ["Next.js", "PostgreSQL"]
+                }
+            ];
+
+            const renderProjects = (filter = 'all') => {
+                const grid = document.getElementById('projectsGrid');
+                grid.innerHTML = '';
+                projects.forEach((p, index) => {
+                    if (filter !== 'all' && p.category !== filter) return;
+                    const card = document.createElement('div');
+                    card.className = 'project-card-v2';
+                    card.setAttribute('data-category', p.category);
+                    card.setAttribute('data-aos', 'fade-up');
+                    card.style.display = 'block';
+                    card.innerHTML = `
+                        <div class="project-media">
+                            <img src="${p.image}" alt="${p.title}">
+                        </div>
+                        <div class="project-info-new">
+                            <div class="tech-stack">${p.tech.map(t => `<span>${t}</span>`).join('')}</div>
+                            <h3>${p.title}</h3>
+                            <div class="admin-actions" style="display: none; margin-top: 15px; gap: 10px;">
+                                <button onclick="editProject(${p.id})" style="background: var(--accent-glow); color: #000; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Edit</button>
+                                <button onclick="deleteProject(${p.id})" style="background: #ff4444; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+                if (window.isAdmin) {
+                    document.querySelectorAll('.admin-actions').forEach(a => a.style.display = 'flex');
+                }
+            };
+            renderProjects();
+
+            // Admin Logic
+            window.isAdmin = false;
+            let clickCount = 0;
+            document.querySelector('footer p').addEventListener('click', () => {
+                clickCount++;
+                if (clickCount >= 5) {
+                    const pass = prompt("Enter Admin Password:");
+                    if (pass === "admin123") {
+                        window.isAdmin = true;
+                        alert("Admin Mode Activated!");
+                        document.getElementById('adminPanelTrigger').style.display = 'block';
+                        renderProjects();
+                    }
+                    clickCount = 0;
+                }
+            });
+
+            window.deleteProject = (id) => {
+                if (confirm("Are you sure?")) {
+                    projects = projects.filter(p => p.id !== id);
+                    localStorage.setItem('portfolio_projects', JSON.stringify(projects));
+                    renderProjects();
+                }
+            };
+
+            window.editProject = (id) => {
+                const p = projects.find(proj => proj.id === id);
+                document.getElementById('projId').value = p.id;
+                document.getElementById('projTitle').value = p.title;
+                document.getElementById('projImg').value = p.image;
+                document.getElementById('projCat').value = p.category;
+                document.getElementById('projTech').value = p.tech.join(', ');
+                document.getElementById('adminModal').style.display = 'flex';
+            };
+
+            window.addNewProject = () => {
+                document.getElementById('projId').value = '';
+                document.getElementById('adminForm').reset();
+                document.getElementById('adminModal').style.display = 'flex';
+            };
+
+            window.saveProject = (e) => {
+                e.preventDefault();
+                const id = document.getElementById('projId').value;
+                const newProj = {
+                    id: id ? parseInt(id) : Date.now(),
+                    title: document.getElementById('projTitle').value,
+                    image: document.getElementById('projImg').value,
+                    category: document.getElementById('projCat').value,
+                    tech: document.getElementById('projTech').value.split(',').map(t => t.trim())
+                };
+
+                if (id) {
+                    const idx = projects.findIndex(p => p.id === parseInt(id));
+                    projects[idx] = newProj;
+                } else {
+                    projects.push(newProj);
+                }
+
+                localStorage.setItem('portfolio_projects', JSON.stringify(projects));
+                renderProjects();
+                document.getElementById('adminModal').style.display = 'none';
+            };
+
+            window.exportHTML = () => {
+                const currentHTML = document.documentElement.outerHTML;
+                // Replace the default projects array in the source with the current projects
+                const projectString = JSON.stringify(projects, null, 4);
+                const scriptRegex = /let projects = JSON\.parse\(localStorage\.getItem\('portfolio_projects'\)\) \|\| \[[\s\S]*?\];/;
+                const newHTML = currentHTML.replace(scriptRegex, `let projects = JSON.parse(localStorage.getItem('portfolio_projects')) || ${projectString};`);
+
+                const blob = new Blob([newHTML], { type: 'text/html' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'index.html';
+                a.click();
+            };
+
             // Filters
             const filters = document.querySelectorAll('.filter-btn');
-            const cards = document.querySelectorAll('.project-card-v2');
             filters.forEach(f => {
                 f.addEventListener('click', () => {
                     filters.forEach(btn => btn.classList.remove('active'));
                     f.classList.add('active');
-                    const filter = f.getAttribute('data-filter');
-                    cards.forEach(c => {
-                        const show = filter === 'all' || c.getAttribute('data-category') === filter;
-                        c.style.display = show ? 'block' : 'none';
-                        if (show) gsap.from(c, { scale: 0.8, opacity: 0, duration: 0.4 });
-                    });
+                    renderProjects(f.getAttribute('data-filter'));
                 });
             });
         });
