@@ -74,28 +74,10 @@
             background: #f8fafc !important;
         }
 
-        /* Custom Cursor */
-        .cursor-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-glow);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10001;
-            transform: translate(-50%, -50%);
-        }
-
+        /* Custom Cursor - Hidden for 3D Mesh */
+        .cursor-dot,
         .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--accent-glow);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            display: none !important;
         }
 
         /* Navbar */
@@ -965,7 +947,7 @@
                 dot.style.top = outline.style.top = `${e.clientY}px`;
             });
 
-            // Three.js Ribbon Cursor Trail Effect
+            // Three.js 3D Mesh Cursor Effect
             const initThreeCursor = () => {
                 const scene = new THREE.Scene();
                 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -979,77 +961,57 @@
                 renderer.domElement.style.zIndex = '9999';
                 document.body.appendChild(renderer.domElement);
 
-                const count = 30; // Number of segments
-                const points = Array.from({ length: count }, () => new THREE.Vector3());
-                const width = 15;
+                // Add Ambient Light
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
 
-                // Create Ribbon Geometry
-                const geometry = new THREE.PlaneGeometry(1, 1, 1, count - 1);
-                const material = new THREE.MeshBasicMaterial({
+                // Create 3D Cursor Mesh
+                const geometry = new THREE.IcosahedronGeometry(15, 0);
+                const material = new THREE.MeshStandardMaterial({
                     color: 0x38bdf8,
+                    emissive: 0x38bdf8,
+                    emissiveIntensity: 2,
+                    wireframe: true,
                     transparent: true,
-                    opacity: 0.6,
-                    side: THREE.DoubleSide,
-                    blending: THREE.AdditiveBlending
+                    opacity: 0.8
                 });
+                const cursorMesh = new THREE.Mesh(geometry, material);
+                scene.add(cursorMesh);
 
-                // Custom Vertex Colors for Gradient
-                const colors = new Float32Array(count * 2 * 3);
-                for (let i = 0; i < count; i++) {
-                    const alpha = 1 - (i / count);
-                    const colorIndex = i * 2 * 3;
-                    // Two vertices per segment
-                    for (let j = 0; j < 2; j++) {
-                        colors[colorIndex + j * 3] = 0.22; // R
-                        colors[colorIndex + j * 3 + 1] = 0.74; // G
-                        colors[colorIndex + j * 3 + 2] = 0.97; // B
-                    }
-                }
-                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-                material.vertexColors = true;
+                // Add Point Light to Cursor
+                const pointLight = new THREE.PointLight(0x38bdf8, 50, 100);
+                scene.add(pointLight);
 
-                // Opacity Gradient via Shader hack or simple alpha map
-                // For simplicity, we'll use a custom shader or update the opacity in a loop if using Points, 
-                // but for Mesh we can use a texture or custom material.
-                // Let's use a simpler approach with a trail of lines or updated planes.
-
-                const ribbonMesh = new THREE.Mesh(geometry, material);
-                scene.add(ribbonMesh);
                 camera.position.z = 500;
+
+                const cursorTarget = new THREE.Vector3();
+                const cursorActual = new THREE.Vector3();
 
                 const animate = () => {
                     requestAnimationFrame(animate);
 
+                    // Convert Mouse to 3D Space (Screen to World)
                     const x = (mouse.x - window.innerWidth / 2) * (1000 / window.innerWidth);
                     const y = -(mouse.y - window.innerHeight / 2) * (1000 / window.innerHeight);
+                    cursorTarget.set(x, y, 0);
 
-                    // Smooth follow physics
-                    points[0].x += (x - points[0].x) * 0.3;
-                    points[0].y += (y - points[0].y) * 0.3;
+                    // Smooth interpolation (lerp)
+                    cursorActual.lerp(cursorTarget, 0.2);
 
-                    for (let i = 1; i < count; i++) {
-                        points[i].x += (points[i - 1].x - points[i].x) * 0.3;
-                        points[i].y += (points[i - 1].y - points[i].y) * 0.3;
-                    }
+                    cursorMesh.position.copy(cursorActual);
+                    pointLight.position.copy(cursorActual);
 
-                    // Update Geometry Vertices
-                    const posAttr = geometry.attributes.position;
-                    const cross = new THREE.Vector3();
-                    const dir = new THREE.Vector3();
+                    // Rotating animation
+                    cursorMesh.rotation.x += 0.02;
+                    cursorMesh.rotation.y += 0.02;
 
-                    for (let i = 0; i < count; i++) {
-                        if (i < count - 1) {
-                            dir.subVectors(points[i], points[i + 1]).normalize();
-                        }
-                        cross.set(dir.y, -dir.x, 0).normalize();
+                    // Reactive scaling
+                    const targetScale = window.isInteracting ? 2 : 1;
+                    const lerpSpeed = 0.1;
+                    cursorMesh.scale.x += (targetScale - cursorMesh.scale.x) * lerpSpeed;
+                    cursorMesh.scale.y += (targetScale - cursorMesh.scale.y) * lerpSpeed;
+                    cursorMesh.scale.z += (targetScale - cursorMesh.scale.z) * lerpSpeed;
 
-                        const currentWidth = width * (1 - i / count) * (window.isInteracting ? 2 : 1);
-
-                        posAttr.setXYZ(i * 2, points[i].x + cross.x * currentWidth, points[i].y + cross.y * currentWidth, 0);
-                        posAttr.setXYZ(i * 2 + 1, points[i].x - cross.x * currentWidth, points[i].y - cross.y * currentWidth, 0);
-                    }
-
-                    posAttr.needsUpdate = true;
                     renderer.render(scene, camera);
                 };
 
