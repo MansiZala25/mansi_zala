@@ -1,13 +1,13 @@
 :root {
-    --bg-black: #0A0A0A;
-    --bg-dark-blue: #0F172A;
-    --neon-blue: #00F5FF;
+    --bg-black: #000000;
+    --bg-dark-blue: #020617;
+    --neon-blue: #00FFFF;
     --soft-blue: #3B82F6;
     --text-white: #FFFFFF;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glow-shadow: 0 0 20px #00F5FF;
-    --text-glow: 0 0 15px #00F5FF;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(0, 255, 255, 0.15);
+    --glow-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+    --text-glow: 0 0 20px rgba(0, 255, 255, 0.6);
     --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -166,8 +166,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Responsive Design */
@@ -175,9 +182,11 @@ body {
     .navbar {
         padding: 1rem 5%;
     }
+
     .nav-links {
         display: none;
     }
+
     .hero h1 {
         font-size: 2.5rem;
     }
