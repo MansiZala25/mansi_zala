@@ -23,6 +23,7 @@ body {
     color: var(--text-white);
     overflow-x: hidden;
     line-height: 1.6;
+    scroll-behavior: smooth;
 }
 
 /* Custom Cursor */
@@ -50,7 +51,7 @@ body {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--glass-border);
-    z-index: 999;
+    z-index: 1000;
 }
 
 .nav-logo {
@@ -136,29 +137,26 @@ body {
     box-shadow: var(--glow-shadow);
 }
 
+/* --- Sections Common --- */
+section {
+    padding: 100px 10%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 /* Hero Section */
 .hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     text-align: center;
     background: linear-gradient(135deg, var(--bg-black) 0%, var(--bg-dark-blue) 100%);
-    padding: 0 10%;
     position: relative;
+    padding-top: 50px;
 }
 
-.hero-profile {
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 2rem;
-    transition: var(--transition-smooth);
-}
-
-.hero-profile:hover {
-    transform: scale(1.1);
+.typed-container {
+    font-size: 1.8rem;
+    margin: 1.5rem 0;
 }
 
 /* --- About Section --- */
@@ -167,8 +165,21 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: center;
-    padding: 100px 10%;
-    min-height: 100vh;
+}
+
+.about-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-profile {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: var(--glow-shadow);
+    border: 2px solid var(--neon-blue);
 }
 
 .skill-bar {
@@ -193,7 +204,6 @@ body {
     height: 100%;
     background: var(--neon-blue);
     box-shadow: 0 0 10px var(--neon-blue);
-    transition: width 1.5s ease-in-out;
 }
 
 .edu-card {
@@ -203,12 +213,6 @@ body {
 }
 
 /* --- Services Section --- */
-.services-container {
-    padding: 100px 10%;
-    text-align: center;
-    min-height: 100vh;
-}
-
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -218,8 +222,8 @@ body {
 
 .service-card {
     padding: 3rem 2rem;
-    cursor: pointer;
     text-align: center;
+    cursor: pointer;
 }
 
 .service-card i {
@@ -236,11 +240,6 @@ body {
 }
 
 /* --- Projects Section --- */
-.projects-container {
-    padding: 100px 10%;
-    min-height: 100vh;
-}
-
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -278,12 +277,10 @@ body {
 }
 
 /* --- Contact Section --- */
-.contact-container {
-    padding: 100px 10%;
+.contact-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     gap: 4rem;
-    min-height: 100vh;
 }
 
 .contact-info i {
@@ -340,22 +337,28 @@ body {
     }
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 992px) {
-
-    .about-grid,
-    .contact-container {
-        grid-template-columns: 1fr;
-        padding-top: 80px;
+    section {
+        padding: 80px 5%;
     }
 
-    .navbar {
-        padding: 1rem 5%;
+    .about-grid,
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-img-container {
+        order: -1;
     }
 }
 
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
     }
 }
