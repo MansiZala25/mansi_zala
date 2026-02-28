@@ -4,1056 +4,453 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mansi Zala | Professional Portfolio</title>
-
-    <!-- Fonts -->
+    <title>Mansi Zala | Portfolio</title>
+    <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;700&display=swap"
         rel="stylesheet">
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Animation Libraries -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
-
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* Base styles from style.css */
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 80px;
-        }
-
-        :root {
-            --bg-dark: #020617;
-            --bg-blue: #0f172a;
-            --text-primary: #f8fafc;
-            --text-muted: #64748b;
-            --accent-glow: #38bdf8;
-            --accent-hover: #0ea5e9;
-            --glass-bg: rgba(15, 23, 42, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.05);
-            --glow-shadow: rgba(56, 189, 248, 0.25);
-        }
-
-        /* Light Mode Variables override */
-        :root.light-mode {
-            --bg-dark: #f8fafc;
-            --bg-blue: #ffffff;
-            --text-primary: #020617;
-            --text-muted: #64748b;
-            --accent-glow: #2563eb;
-            --accent-hover: #1d4ed8;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(0, 0, 0, 0.08);
-            --glow-shadow: rgba(37, 99, 235, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', 'Outfit', sans-serif;
-        }
-
-        body {
-            background: radial-gradient(circle at top right, var(--bg-blue), var(--bg-dark) 70%);
-            background-attachment: fixed;
-            color: var(--text-primary);
-            overflow-x: hidden;
-            cursor: none;
-            transition: background 0.3s;
-        }
-
-        .light-mode body {
-            background: #f8fafc !important;
-        }
-
-        /* Professional Minimalist Cursor */
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10001;
-            mix-blend-mode: difference;
-        }
-
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 1px solid #fff;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            mix-blend-mode: difference;
-            transition: transform 0.3s ease;
-        }
-
-        /* Navbar */
-        .navbar {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-            text-shadow: 0 0 10px var(--glow-shadow);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-glow);
-            text-shadow: 0 0 8px var(--glow-shadow);
-        }
-
-        /* Glassmorphism Card Utility */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-        }
-
-        .light-mode .glass-card {
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05) !important;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 12px 30px;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.4s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: var(--accent-hover);
-            color: white;
-            box-shadow: 0 0 15px var(--glow-shadow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px var(--accent-glow);
-        }
-
-        /* Theme Toggle */
-        .theme-toggle {
-            background: var(--glass-border);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-left: 20px;
-        }
-
-        .theme-toggle:hover {
-            background: var(--accent-glow);
-            color: white;
-            transform: scale(1.1);
-        }
-
-        /* Sections */
-        section {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-            position: relative;
-        }
-
-        /* Component Styles */
-        .main-title {
-            background: linear-gradient(to bottom, #fff 0%, #a0a0a0 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 25px;
-        }
-
-        .bento-item {
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: 0.5s;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .bento-item:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-glow);
-            background: rgba(13, 27, 42, 0.9);
-        }
-
-        .project-card-v2 {
-            border-radius: 20px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            transition: 0.5s;
-        }
-
-        .project-card-v2:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-glow);
-        }
-
-        .project-media img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: 1s;
-        }
-
-        .project-info-new {
-            padding: 25px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .project-card-v2 {
-            position: relative;
-        }
-
-        .project-card-v2::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(56, 189, 248, 0.08), transparent 40%);
-            border-radius: inherit;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s;
-            z-index: 3;
-        }
-
-        .project-card-v2:hover::before {
-            opacity: 1;
-        }
-
-        /* Preloader */
-        #preloader {
+        #particle-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: 0.5s;
+            height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0F172A 0%, #0A0A0A 100%);
         }
+    </style>
+</head>
 
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--bg-blue);
-            border-top: 5px solid var(--accent-glow);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
+<body class="page-fade">
+    <!-- Preloader -->
+    <div id="preloader"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0A0A0A; z-index: 10001; display: flex; justify-content: center; align-items: center;">
+        <div class="loader"
+            style="width: 50px; height: 50px; border: 3px solid transparent; border-top-color: #00F5FF; border-radius: 50%; animation: spin 1s linear infinite;">
+        </div>
+    </div>
+    <style>
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
+            to {
                 transform: rotate(360deg);
-            }
-        }
-
-        /* Scroll to Top */
-        #scrollTop {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--accent-hover);
-            border-radius: 50%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 999;
-            box-shadow: 0 0 15px var(--glow-shadow);
-        }
-
-        /* Form Styles */
-        .field-wrap input,
-        .field-wrap textarea {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px 0;
-            color: #fff;
-            font-size: 1.1rem;
-            outline: none;
-            transition: 0.4s;
-        }
-
-        .light-mode .field-wrap input,
-        .light-mode .field-wrap textarea {
-            color: #000;
-            border-bottom-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .field-wrap input:focus,
-        .field-wrap textarea:focus {
-            border-color: var(--accent-glow);
-            padding-left: 10px;
-        }
-
-        .submit-btn-minimal {
-            background: var(--accent-glow);
-            color: #000;
-            border: none;
-            padding: 22px 50px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 20px;
-            cursor: pointer;
-            transition: 0.4s;
-        }
-
-        .submit-btn-minimal:hover {
-            background: #fff;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        /* Filter buttons */
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            padding: 10px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .filter-btn.active,
-        .filter-btn:hover {
-            background: var(--accent-glow);
-            color: #000;
-            border-color: var(--accent-glow);
-        }
-
-        /* Tech stack spans */
-        .tech-stack span {
-            font-size: 0.7rem;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--accent-glow);
-            padding: 4px 10px;
-            border-radius: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px solid rgba(0, 210, 255, 0.1);
-        }
-
-        /* Education timeline */
-        .timeline-item {
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-glow);
-            border-radius: 50%;
-            left: -61px;
-            top: 0;
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .navbar {
-                padding: 20px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .bento-item {
-                grid-column: span 12 !important;
             }
         }
     </style>
 
-    <script>
-        // Prevent theme flash
-        (function () {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.documentElement.classList.add('light-mode');
-            }
-        })();
-    </script>
-</head>
-
-<body>
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
-
     <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
+    <div class="cursor-blob"></div>
+
+    <!-- Three.js Background -->
+    <canvas id="particle-bg"></canvas>
 
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="logo">Mansi Zala</div>
+        <a href="index.html" class="nav-logo">Mansi Zala</a>
         <ul class="nav-links">
-            <li><a href="#home" class="magnetic">Home</a></li>
-            <li><a href="#about" class="magnetic">About</a></li>
-            <li><a href="#services" class="magnetic">Services</a></li>
-            <li><a href="#projects" class="magnetic">Projects</a></li>
-            <li><a href="#contact" class="magnetic">Contact</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ul>
-        <button id="themeToggle" class="theme-toggle magnetic" title="Toggle Theme">
-            <i class="fas fa-moon"></i>
-        </button>
-        <button id="adminPanelTrigger" class="theme-toggle magnetic"
-            style="display: none; background: var(--accent-glow); color: #000;" onclick="addNewProject()"
-            title="Add Project">
-            <i class="fas fa-plus"></i>
-        </button>
+        <div class="mobile-toggle" style="display: none;"><i class="fas fa-bars"></i></div>
     </nav>
 
-    <!-- Admin Modal -->
-    <div id="adminModal"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10002; justify-content: center; align-items: center; backdrop-filter: blur(10px);">
-        <div class="glass-card" style="width: 90%; max-width: 500px; padding: 40px; position: relative;">
-            <button onclick="document.getElementById('adminModal').style.display='none'"
-                style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
-            <h2 style="margin-bottom: 30px;">Project Manager</h2>
-            <form id="adminForm" onsubmit="saveProject(event)" class="field-wrap">
-                <input type="hidden" id="projId">
-                <div style="margin-bottom: 20px;"><input type="text" id="projTitle" placeholder="Project Title"
-                        required></div>
-                <div style="margin-bottom: 20px;"><input type="text" id="projImg" placeholder="Image URL" required>
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <select id="projCat"
-                        style="width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 15px 0; color: #fff; outline: none;">
-                        <option value="web" style="background: var(--bg-dark);">Web App</option>
-                        <option value="mobile" style="background: var(--bg-dark);">Mobile</option>
-                        <option value="graphics" style="background: var(--bg-dark);">Design</option>
-                    </select>
-                </div>
-                <div style="margin-bottom: 30px;"><input type="text" id="projTech"
-                        placeholder="Tech Stack (comma separated)" required></div>
-                <button type="submit" class="submit-btn-minimal" style="width: 100%; padding: 15px;">Save
-                    Project</button>
-                <button type="button" onclick="exportHTML()"
-                    style="width: 100%; padding: 15px; margin-top: 10px; background: var(--text-muted); color: #fff; border: none; border-radius: 5px; cursor: pointer;">Export
-                    Permanent HTML</button>
-            </form>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="glass-card" data-aos="zoom-in">
+            <img src="image.png" alt="Mansi Zala" class="hero-profile glow-border">
+            <h1 class="glow-text" style="font-size: 4rem; margin-bottom: 0.5rem;">Mansi Zala</h1>
+            <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;">
+                I am a <span id="typed" class="neon-blue"></span>
+            </h2>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <a href="contact.html" class="btn btn-primary">Hire Me</a>
+                <a href="projects.html" class="btn btn-secondary">View Projects</a>
+            </div>
         </div>
-    </div>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Home Section -->
-        <section id="home" class="home-wrapper" style="position: relative; overflow: hidden; min-height: 100vh;">
-            <div class="bg-elements" style="position: absolute; width: 100%; height: 100%; z-index: -1;">
-                <div class="glow-orb-large"
-                    style="position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, transparent 70%); top: -10%; left: -10%;">
-                </div>
-                <div class="glow-orb-large"
-                    style="position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(58, 134, 255, 0.1) 0%, transparent 70%); bottom: -5%; right: -5%;">
-                </div>
-                <canvas id="particleCanvas"
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3;"></canvas>
-            </div>
+        <!-- Scroll Down Indicator -->
+        <div class="scroll-down"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite;">
+            <i class="fas fa-chevron-down" style="color: #00F5FF; font-size: 1.5rem;"></i>
+        </div>
+    </section>
+    <style>
+        @keyframes bounce {
 
-            <div class="hero-center"
-                style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100vh; padding: 0 20px;">
-                <div class="hero-content" data-aos="zoom-out" data-aos-duration="1500" style="max-width: 900px;">
-                    <h6 style="color: var(--accent-glow); text-transform: uppercase; letter-spacing: 5px; font-weight: 700; margin-bottom: 25px; display: block;"
-                        data-aos="fade-down" data-aos-delay="500">Welcome to my universe</h6>
-                    <h1 class="main-title"
-                        style="font-size: clamp(3rem, 10vw, 6rem); line-height: 1; font-weight: 800; margin-bottom: 20px; letter-spacing: -2px;">
-                        Mansi <span
-                            style="color: var(--accent-glow); text-shadow: 0 0 30px var(--glow-shadow);">Zala</span>
-                    </h1>
-                    <h2
-                        style="font-size: clamp(1.2rem, 3vw, 2.5rem); margin-bottom: 40px; color: var(--text-muted); font-weight: 400;">
-                        Crafting <span class="typing" style="color: var(--text-primary); font-weight: 700;"></span>
-                    </h2>
-                    <p style="max-width: 600px; margin: 0 auto 50px; line-height: 1.8; color: var(--text-muted); font-size: 1.1rem;"
-                        data-aos="fade-up" data-aos-delay="800">
-                        Transforming complex problems into elegant, user-centric digital solutions. Expert in full-stack
-                        development and visual storytelling.
-                    </p>
-                    <div class="hero-actions" style="display: flex; gap: 20px; justify-content: center;"
-                        data-aos="fade-up" data-aos-delay="1000">
-                        <a href="#projects" class="btn btn-primary"
-                            style="font-size: 1.1rem; padding: 15px 40px;">Explore
-                            Projects</a>
-                        <a href="#contact" class="btn"
-                            style="border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-primary); backdrop-filter: blur(10px);">Get
-                            In Touch</a>
-                    </div>
-                </div>
-                <div class="scroll-indicator"
-                    style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); text-align: center; color: var(--text-muted);">
-                    <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">
-                        Scroll
-                    </p>
-                    <div
-                        style="width: 2px; height: 50px; background: linear-gradient(to bottom, var(--accent-glow), transparent); margin: 0 auto;">
-                    </div>
-                </div>
-            </div>
-        </section>
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
 
-        <!-- About Section -->
-        <section id="about" class="about-hero" style="padding: 120px 20px 80px;">
-            <div class="container"
-                style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 80px; flex-wrap: wrap;">
-                <div class="about-img-wrapper" data-aos="fade-right"
-                    style="flex: 1; min-width: 300px; position: relative;">
-                    <div class="glow-orb"
-                        style="position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, var(--glow-shadow) 0%, transparent 70%); top: -50px; left: -50px; z-index: -1;">
-                    </div>
-                    <div class="glass-card" style="padding: 15px; border-radius: 20px;">
-                        <img src="image.png" alt="Mansi Zala Professional"
-                            style="display: block; width: 100%; border-radius: 15px; filter: grayscale(20%); transition: 0.5s;"
-                            id="main-about-img">
-                    </div>
-                </div>
-                <div class="about-info" data-aos="fade-left" style="flex: 1.2; min-width: 350px;">
-                    <h6
-                        style="color: var(--accent-glow); text-transform: uppercase; letter-spacing: 3px; font-weight: 700; margin-bottom: 15px;">
-                        Who Am I?</h6>
-                    <h2 style="font-size: 3.5rem; line-height: 1.1; margin-bottom: 30px;">I merge <span
-                            style="color: var(--accent-glow);">Code</span> with <span
-                            style="color: var(--accent-hover);">Design</span>.</h2>
-                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 30px;">
-                        I am a results-driven **Software Developer** and **Graphic Designer** currently pursuing a BCA
-                        at
-                        TeamLease Skills University. My approach is centered on creating seamless user experiences
-                        through
-                        robust back-end logic and pixel-perfect front-end design.
-                    </p>
-                    <div class="stats-row" style="display: flex; gap: 40px; margin-top: 40px;">
-                        <div class="stat-item">
-                            <h4 style="font-size: 2rem; color: var(--text-primary);">1+</h4>
-                            <p style="color: var(--text-muted); font-size: 0.9rem;">Years of Learning</p>
-                        </div>
-                        <div class="stat-item">
-                            <h4 style="font-size: 2rem; color: var(--text-primary);">5+</h4>
-                            <p style="color: var(--text-muted); font-size: 0.9rem;">Projects Completed</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
 
-        <!-- Skills Section -->
-        <section class="skills-section" style="padding: 100px 20px; background: rgba(0,0,0,0.2);">
-            <div class="container" style="max-width: 1200px; margin: 0 auto;">
-                <div style="text-align: center; margin-bottom: 80px;">
-                    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Technical Arsenal</h2>
-                    <div style="width: 60px; height: 4px; background: var(--accent-glow); margin: 0 auto;"></div>
-                </div>
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
+        }
+    </style>
 
-                <div class="skills-grid"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
-                    <div class="glass-card skill-card" data-aos="flip-left" style="padding: 40px; text-align: center;">
-                        <i class="fab fa-html5" style="font-size: 3rem; color: #e34f26; margin-bottom: 20px;"></i>
-                        <h3>Web Technologies</h3>
-                        <p style="margin: 15px 0 25px; color: var(--text-muted);">Expertise in semantic HTML, CSS3, and
-                            modern JavaScript frameworks.</p>
-                        <div class="progress-container"
-                            style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                            <div class="gsap-progress" data-width="90%"
-                                style="width: 0; height: 100%; background: var(--accent-glow); box-shadow: 0 0 10px var(--accent-glow);">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="glass-card skill-card" data-aos="flip-left" data-aos-delay="100"
-                        style="padding: 40px; text-align: center;">
-                        <i class="fab fa-php" style="font-size: 3rem; color: #777bb4; margin-bottom: 20px;"></i>
-                        <h3>Back-end Logic</h3>
-                        <p style="margin: 15px 0 25px; color: var(--text-muted);">Skilled in PHP, Laravel development,
-                            and MySQL database management.</p>
-                        <div class="progress-container"
-                            style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                            <div class="gsap-progress" data-width="85%"
-                                style="width: 0; height: 100%; background: var(--accent-glow); box-shadow: 0 0 10px var(--accent-glow);">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="glass-card skill-card" data-aos="flip-left" data-aos-delay="200"
-                        style="padding: 40px; text-align: center;">
-                        <i class="fas fa-bezier-curve"
-                            style="font-size: 3rem; color: var(--accent-hover); margin-bottom: 20px;"></i>
-                        <h3>Visual Design</h3>
-                        <p style="margin: 15px 0 25px; color: var(--text-muted);">Advanced proficiency in Canva,
-                            Photoshop, and CorelDRAW.</p>
-                        <div class="progress-container"
-                            style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                            <div class="gsap-progress" data-width="95%"
-                                style="width: 0; height: 100%; background: var(--accent-glow); box-shadow: 0 0 10px var(--accent-glow);">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="services-v2-wrapper" style="padding: 100px 20px; background: var(--bg-dark);">
-            <div class="container" style="max-width: 1200px; margin: 0 auto;">
-                <div style="text-align: center; margin-bottom: 80px;">
-                    <span class="badge"
-                        style="background: rgba(0, 210, 255, 0.1); color: var(--accent-glow); padding: 8px 20px; border-radius: 30px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;">Expertise</span>
-                    <h2 style="font-size: 3.5rem; margin-top: 20px;">Digital <span
-                            style="color: var(--accent-glow);">Excellence</span></h2>
-                </div>
-                <div class="bento-grid">
-                    <div class="bento-item web-dev" data-aos="fade-up" style="grid-column: span 8;">
-                        <i class="fas fa-code"
-                            style="font-size: 2.5rem; color: var(--accent-glow); margin-bottom: 30px;"></i>
-                        <h3 style="font-size: 2rem; margin-bottom: 20px;">Website Development</h3>
-                        <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 30px;">High-performance
-                            Laravel applications and modern PHP solutions.</p>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
-                            <span
-                                style="background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 5px; font-size: 0.8rem;">Laravel</span>
-                            <span
-                                style="background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 5px; font-size: 0.8rem;">PHP</span>
-                            <span
-                                style="background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 5px; font-size: 0.8rem;">MySQL</span>
-                        </div>
-                    </div>
-                    <div class="bento-item seo-dev" data-aos="fade-up" data-aos-delay="100"
-                        style="grid-column: span 4;">
-                        <i class="fas fa-magnifying-glass-chart"
-                            style="font-size: 2.5rem; color: var(--accent-hover); margin-bottom: 30px;"></i>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 20px;">SEO & Visibility</h3>
-                        <p style="color: var(--text-muted); line-height: 1.7;">Strategy-driven search engine
-                            optimization to boost your organic reach.</p>
-                    </div>
-                    <div class="bento-item graphic-dev" data-aos="fade-up" style="grid-column: span 6;">
-                        <i class="fas fa-bezier-curve"
-                            style="font-size: 2.5rem; color: var(--accent-glow); margin-bottom: 30px;"></i>
-                        <h3 style="font-size: 1.8rem; margin-bottom: 20px;">Graphic Design</h3>
-                        <p style="color: var(--text-muted); line-height: 1.7;">Creating memorable visual identities that
-                            resonate with your brand.</p>
-                    </div>
-                    <div class="bento-item app-dev" data-aos="fade-up" data-aos-delay="100"
-                        style="grid-column: span 6;">
-                        <i class="fas fa-mobile-screen-button"
-                            style="font-size: 2.5rem; color: var(--accent-hover); margin-bottom: 30px;"></i>
-                        <h3 style="font-size: 1.8rem; margin-bottom: 20px;">Application Dev</h3>
-                        <p style="color: var(--text-muted); line-height: 1.7;">Tailored mobile and desktop applications
-                            designed for growth.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="projects-v2-wrapper" style="padding: 100px 20px;">
-            <div class="container" style="max-width: 1200px; margin: 0 auto;">
-                <div style="text-align: center; margin-bottom: 80px;">
-                    <span class="badge"
-                        style="background: rgba(58, 134, 255, 0.1); color: var(--accent-hover); padding: 8px 20px; border-radius: 30px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;">Portfolio</span>
-                    <h2 style="font-size: 3.5rem; margin-top: 20px;">Featured <span
-                            style="color: var(--accent-glow);">Work</span></h2>
-                </div>
-                <!-- Category Filter -->
-                <div class="filter-controls"
-                    style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px;">
-                    <button class="filter-btn active" data-filter="all">All Work</button>
-                    <button class="filter-btn" data-filter="web">Web Apps</button>
-                    <button class="filter-btn" data-filter="mobile">Mobile</button>
-                    <button class="filter-btn" data-filter="graphics">Design</button>
-                </div>
-                <div class="projects-grid" id="projectsGrid"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
-                    <!-- Projects will be injected here by JavaScript -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact-minimal-wrapper" style="padding: 120px 20px; background: rgba(0,0,0,0.2);">
-            <div class="container" style="max-width: 1100px; margin: 0 auto;">
-                <div class="contact-header" style="text-align: center; margin-bottom: 80px;" data-aos="fade-up">
-                    <h6
-                        style="color: var(--accent-glow); text-transform: uppercase; letter-spacing: 5px; font-weight: 700; font-size: 0.8rem; margin-bottom: 20px;">
-                        Get in touch</h6>
-                    <h2 style="font-size: 3.5rem; font-weight: 800;">Let’s collaborate on your <br><span>next big
-                            thing</span>.</h2>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px;">
-                    <div data-aos="fade-right">
-                        <div class="detail-item-v3" style="margin-bottom: 30px;">
-                            <span
-                                style="color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 700; display: block; margin-bottom: 10px;">Direct
-                                Line</span>
-                            <a href="tel:+91778940589"
-                                style="font-size: 1.2rem; color: var(--text-primary); text-decoration: none; font-weight: 600;">+91
-                                778940589</a>
-                        </div>
-                        <div class="detail-item-v3">
-                            <span
-                                style="color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 700; display: block; margin-bottom: 10px;">Email
-                                Inquiry</span>
-                            <a href="mailto:zalamansi.tlsu@gmail.com"
-                                style="font-size: 1.2rem; color: var(--text-primary); text-decoration: none; font-weight: 600;">zalamansi.tlsu@gmail.com</a>
-                        </div>
-                        <div class="social-minimal" style="margin-top: 40px;">
-                            <div style="display: flex; gap: 25px;">
-                                <a href="https://linkedin.com/in/mansizala" target="_blank"
-                                    style="color: var(--text-primary); text-decoration: none; font-weight: 600;">LinkedIn</a>
-                                <a href="https://instagram.com/mansizala" target="_blank"
-                                    style="color: var(--text-primary); text-decoration: none; font-weight: 600;">Instagram</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-aos="fade-left">
-                        <form action="#" class="field-wrap">
-                            <div style="margin-bottom: 25px;"><input type="text" placeholder="Full Name" required></div>
-                            <div style="margin-bottom: 25px;"><input type="email" placeholder="Email Address" required>
-                            </div>
-                            <div style="margin-bottom: 35px;"><textarea rows="4" placeholder="Your Message"></textarea>
-                            </div>
-                            <button type="submit" class="submit-btn-minimal" style="width: 100%;">Send Message
-                                →</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer
-        style="padding: 40px 20px; border-top: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); text-align: center;">
-        <p style="color: var(--text-muted); font-size: 0.9rem; cursor: pointer;">
-            &copy; 2026 Mansi Zala. All Rights Reserved.
-            <span id="adminLoginLink"
-                style="opacity: 0.3; margin-left: 10px; font-size: 0.7rem; text-decoration: underline;">Admin</span>
-        </p>
-    </footer>
-
-    <!-- Scroll to Top -->
-    <div id="scrollTop"><i class="fas fa-chevron-up" style="color: white;"></i></div>
-
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Theme Toggle
-            const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = themeToggle.querySelector('i');
-            themeToggle.addEventListener('click', () => {
-                document.documentElement.classList.toggle('light-mode');
-                const isLight = document.documentElement.classList.contains('light-mode');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                themeIcon.classList.replace(isLight ? 'fa-moon' : 'fa-sun', isLight ? 'fa-sun' : 'fa-moon');
-            });
-
-            // Preloader
-            window.addEventListener('load', () => {
-                const preloader = document.getElementById('preloader');
+        // Preloader fade out
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
                 preloader.style.opacity = '0';
                 setTimeout(() => { preloader.style.display = 'none'; }, 500);
-            });
+            }, 1000);
+        });
 
-            // AOS
-            AOS.init({ duration: 1000, once: true });
+        // Typed.js Animation
+        new Typed('#typed', {
+            strings: ['Software Developer', 'Web Designer', 'Graphic Designer'],
+            typeSpeed: 60,
+            backSpeed: 40,
+            loop: true
+        });
 
-            // GSAP ScrollTrigger & Section Reveals
-            gsap.registerPlugin(ScrollTrigger);
+        // Three.js Background Particle Animation
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('particle-bg'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
-            const sections = document.querySelectorAll('section');
-            sections.forEach(section => {
-                gsap.from(section, {
-                    opacity: 0,
-                    y: 50,
-                    duration: 1.2,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top 80%",
-                        toggleActions: "play none none none"
-                    }
-                });
-            });
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 2000;
+        const posArray = new Float32Array(particlesCount * 3);
 
-            // Parallax Orbs
-            gsap.to(".glow-orb-large, .glow-orb", {
-                y: (i, target) => -ScrollTrigger.maxScroll(window) * (i === 0 ? 0.1 : 0.2),
-                ease: "none",
+        for (let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const material = new THREE.PointsMaterial({
+            size: 0.005,
+            color: '#00F5FF',
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, material);
+        scene.add(particlesMesh);
+        camera.position.z = 2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.y += 0.001;
+            particlesMesh.rotation.x += 0.0005;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>
+<span id="adminLoginLink"
+    style="opacity: 0.3; margin-left: 10px; font-size: 0.7rem; text-decoration: underline;">Admin</span>
+</p>
+</footer>
+
+<!-- Scroll to Top -->
+<div id="scrollTop"><i class="fas fa-chevron-up" style="color: white;"></i></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('light-mode');
+            const isLight = document.documentElement.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-moon' : 'fa-sun', isLight ? 'fa-sun' : 'fa-moon');
+        });
+
+        // Preloader
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.display = 'none'; }, 500);
+        });
+
+        // AOS
+        AOS.init({ duration: 1000, once: true });
+
+        // GSAP ScrollTrigger & Section Reveals
+        gsap.registerPlugin(ScrollTrigger);
+
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            gsap.from(section, {
+                opacity: 0,
+                y: 50,
+                duration: 1.2,
+                ease: "power2.out",
                 scrollTrigger: {
-                    start: 0,
-                    end: "max",
-                    scrub: true
+                    trigger: section,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
                 }
             });
+        });
 
-            // Floating Orbs Animation (Random)
-            gsap.to(".glow-orb-large, .glow-orb", {
-                x: "random(-100, 100)", y: "random(-100, 100)",
-                duration: 15, repeat: -1, yoyo: true, ease: "sine.inOut"
-            });
+        // Parallax Orbs
+        gsap.to(".glow-orb-large, .glow-orb", {
+            y: (i, target) => -ScrollTrigger.maxScroll(window) * (i === 0 ? 0.1 : 0.2),
+            ease: "none",
+            scrollTrigger: {
+                start: 0,
+                end: "max",
+                scrub: true
+            }
+        });
 
-            // Magnetic Buttons Effect
-            const magneticElements = document.querySelectorAll('.magnetic, .btn');
-            magneticElements.forEach(el => {
-                el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    gsap.to(el, {
-                        x: x * 0.3,
-                        y: y * 0.3,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                });
-                el.addEventListener('mouseleave', () => {
-                    gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
-                });
-            });
+        // Floating Orbs Animation (Random)
+        gsap.to(".glow-orb-large, .glow-orb", {
+            x: "random(-100, 100)", y: "random(-100, 100)",
+            duration: 15, repeat: -1, yoyo: true, ease: "sine.inOut"
+        });
 
-            // Stat Counter Animation
-            const stats = document.querySelectorAll('.stat-item h4');
-            stats.forEach(stat => {
-                const target = parseInt(stat.innerText);
-                const suffix = stat.innerText.replace(/[0-9]/g, '');
-                gsap.from(stat, {
-                    innerText: 0,
-                    duration: 2,
-                    snap: { innerText: 1 },
-                    scrollTrigger: {
-                        trigger: stat,
-                        start: "top 90%",
-                    },
-                    onUpdate: function () {
-                        stat.innerText = Math.ceil(this.targets()[0].innerText) + suffix;
-                    }
+        // Magnetic Buttons Effect
+        const magneticElements = document.querySelectorAll('.magnetic, .btn');
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(el, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.5,
+                    ease: "power2.out"
                 });
             });
-
-            gsap.utils.toArray('.gsap-progress').forEach(p => {
-                gsap.to(p, {
-                    width: p.getAttribute('data-width'),
-                    duration: 1.5,
-                    scrollTrigger: { trigger: p, start: "top 90%" }
-                });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
             });
+        });
 
-            // Particles
-            const canvas = document.getElementById('particleCanvas');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            function initParticles() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                particles = [];
-                for (let i = 0; i < 50; i++) {
-                    particles.push({
-                        x: Math.random() * canvas.width,
-                        y: Math.random() * canvas.height,
-                        size: Math.random() * 2,
-                        speedX: Math.random() * 0.5 - 0.25,
-                        speedY: Math.random() * 0.5 - 0.25
-                    });
+        // Stat Counter Animation
+        const stats = document.querySelectorAll('.stat-item h4');
+        stats.forEach(stat => {
+            const target = parseInt(stat.innerText);
+            const suffix = stat.innerText.replace(/[0-9]/g, '');
+            gsap.from(stat, {
+                innerText: 0,
+                duration: 2,
+                snap: { innerText: 1 },
+                scrollTrigger: {
+                    trigger: stat,
+                    start: "top 90%",
+                },
+                onUpdate: function () {
+                    stat.innerText = Math.ceil(this.targets()[0].innerText) + suffix;
                 }
-            }
-            function animateParticles() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'rgba(0, 210, 255, 0.5)';
-                particles.forEach(p => {
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
-                    p.x += p.speedX; p.y += p.speedY;
-                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-                });
-                requestAnimationFrame(animateParticles);
-            }
-            initParticles(); animateParticles();
-
-            // Typing
-            new Typed(".typing", {
-                strings: ["Digital Experiences", "Software Solutions", "Visual Identities", "Modern Web Apps"],
-                typeSpeed: 80, backSpeed: 50, loop: true
             });
+        });
 
-            // Professional Minimalist Cursor Logic
-            const dot = document.querySelector('.cursor-dot');
-            const outline = document.querySelector('.cursor-outline');
+        gsap.utils.toArray('.gsap-progress').forEach(p => {
+            gsap.to(p, {
+                width: p.getAttribute('data-width'),
+                duration: 1.5,
+                scrollTrigger: { trigger: p, start: "top 90%" }
+            });
+        });
 
+        // Particles
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speedX: Math.random() * 0.5 - 0.25,
+                    speedY: Math.random() * 0.5 - 0.25
+                });
+            }
+        }
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 210, 255, 0.5)';
+            particles.forEach(p => {
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles(); animateParticles();
+
+        // Typing
+        new Typed(".typing", {
+            strings: ["Digital Experiences", "Software Solutions", "Visual Identities", "Modern Web Apps"],
+            typeSpeed: 80, backSpeed: 50, loop: true
+        });
+
+        // Elastic Fluid Cursor Logic
+        const blob = document.querySelector('.cursor-blob');
+        const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        const mouseQuery = { x: pos.x, y: pos.y };
+        const speed = 0.15;
+
+        const xSet = gsap.quickSetter(blob, "x", "px");
+        const ySet = gsap.quickSetter(blob, "y", "px");
+        const rotateSet = gsap.quickSetter(blob, "rotate", "deg");
+        const scaleXSet = gsap.quickSetter(blob, "scaleX");
+        const scaleYSet = gsap.quickSetter(blob, "scaleY");
+
+        window.addEventListener("mousemove", e => {
+            mouseQuery.x = e.clientX;
+            mouseQuery.y = e.clientY;
+        });
+
+        gsap.ticker.add(() => {
+            const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
+
+            pos.x += (mouseQuery.x - pos.x) * dt;
+            pos.y += (mouseQuery.y - pos.y) * dt;
+
+            const dx = mouseQuery.x - pos.x;
+            const dy = mouseQuery.y - pos.y;
+            const vel = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+            const stretch = Math.min(vel / 150, 0.5);
+
+            xSet(pos.x);
+            ySet(pos.y);
+            rotateSet(angle);
+            scaleXSet(1 + stretch);
+            scaleYSet(1 - stretch);
+
+            // Keep the center point
+            gsap.set(blob, { xPercent: -50, yPercent: -50 });
+        });
+
+        document.querySelectorAll('a, button, .bento-item, .project-card-v2').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(blob, { width: 50, height: 50, opacity: 0.8, duration: 0.3 });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(blob, { width: 20, height: 20, opacity: 1, duration: 0.3 });
+            });
+        });
+
+        // Three.js Background Glow Orbs (Subtle)
+        const initThreeBackground = () => {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.domElement.style.position = 'fixed';
+            renderer.domElement.style.top = '0';
+            renderer.domElement.style.left = '0';
+            renderer.domElement.style.pointerEvents = 'none';
+            renderer.domElement.style.zIndex = '-1';
+            document.body.appendChild(renderer.domElement);
+
+            // Re-enable mouse tracking for background effects if needed
+            const bgMouse = { x: 0, y: 0 };
             window.addEventListener('mousemove', (e) => {
-                const { clientX: x, clientY: y } = e;
-                gsap.to(dot, { x, y, duration: 0, xPercent: -50, yPercent: -50 });
-                gsap.to(outline, { x, y, duration: 0.15, xPercent: -50, yPercent: -50 });
+                bgMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                bgMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
             });
 
-            document.querySelectorAll('a, button, .bento-item, .project-card-v2').forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    gsap.to(outline, { scale: 1.5, duration: 0.3 });
-                });
-                el.addEventListener('mouseleave', () => {
-                    gsap.to(outline, { scale: 1, duration: 0.3 });
-                });
-            });
-
-            // Three.js Background Glow Orbs (Subtle)
-            const initThreeBackground = () => {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
-                renderer.setPixelRatio(window.devicePixelRatio);
-                renderer.domElement.style.position = 'fixed';
-                renderer.domElement.style.top = '0';
-                renderer.domElement.style.left = '0';
-                renderer.domElement.style.pointerEvents = 'none';
-                renderer.domElement.style.zIndex = '-1';
-                document.body.appendChild(renderer.domElement);
-
-                // Re-enable mouse tracking for background effects if needed
-                const bgMouse = { x: 0, y: 0 };
-                window.addEventListener('mousemove', (e) => {
-                    bgMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-                    bgMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-                });
-
-                window.addEventListener('resize', () => {
-                    camera.aspect = window.innerWidth / window.innerHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(window.innerWidth, window.innerHeight);
-                });
-
-                // No active cursor mesh, just background render if desired
-                // (Keeping the Three.js architecture for future subtle background effects)
-            };
-            initThreeBackground();
-
-            // Scroll Top
-            const scrollTop = document.getElementById('scrollTop');
-            window.addEventListener('scroll', () => {
-                scrollTop.style.display = window.scrollY > 300 ? 'flex' : 'none';
             });
-            scrollTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-            // Project Data & Rendering
-            let projects = JSON.parse(localStorage.getItem('portfolio_projects')) || [
-                {
-                    id: 1,
-                    title: "Enterprise E-commerce",
-                    category: "web",
-                    image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800",
-                    tech: ["Laravel", "PHP", "MySQL"]
-                },
-                {
-                    id: 2,
-                    title: "Premium Matrimony App",
-                    category: "mobile",
-                    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
-                    tech: ["Flutter", "Firebase"]
-                },
-                {
-                    id: 3,
-                    title: "Brand Revamp 2024",
-                    category: "graphics",
-                    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
-                    tech: ["Photoshop", "Illustrator"]
-                },
-                {
-                    id: 4,
-                    title: "Analytics Dashboard",
-                    category: "web",
-                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
-                    tech: ["Next.js", "PostgreSQL"]
-                }
-            ];
+            // No active cursor mesh, just background render if desired
+            // (Keeping the Three.js architecture for future subtle background effects)
+        };
+        initThreeBackground();
 
-            const renderProjects = (filter = 'all') => {
-                const grid = document.getElementById('projectsGrid');
-                grid.innerHTML = '';
-                projects.forEach((p, index) => {
-                    if (filter !== 'all' && p.category !== filter) return;
-                    const card = document.createElement('div');
-                    card.className = 'project-card-v2';
-                    card.setAttribute('data-category', p.category);
-                    card.setAttribute('data-aos', 'fade-up');
-                    card.style.display = 'block';
-                    card.innerHTML = `
+        // Scroll Top
+        const scrollTop = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            scrollTop.style.display = window.scrollY > 300 ? 'flex' : 'none';
+        });
+        scrollTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // Project Data & Rendering
+        let projects = JSON.parse(localStorage.getItem('portfolio_projects')) || [
+            {
+                id: 1,
+                title: "Enterprise E-commerce",
+                category: "web",
+                image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800",
+                tech: ["Laravel", "PHP", "MySQL"]
+            },
+            {
+                id: 2,
+                title: "Premium Matrimony App",
+                category: "mobile",
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
+                tech: ["Flutter", "Firebase"]
+            },
+            {
+                id: 3,
+                title: "Brand Revamp 2024",
+                category: "graphics",
+                image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
+                tech: ["Photoshop", "Illustrator"]
+            },
+            {
+                id: 4,
+                title: "Analytics Dashboard",
+                category: "web",
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
+                tech: ["Next.js", "PostgreSQL"]
+            }
+        ];
+
+        const renderProjects = (filter = 'all') => {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+            projects.forEach((p, index) => {
+                if (filter !== 'all' && p.category !== filter) return;
+                const card = document.createElement('div');
+                card.className = 'project-card-v2';
+                card.setAttribute('data-category', p.category);
+                card.setAttribute('data-aos', 'fade-up');
+                card.style.display = 'block';
+                card.innerHTML = `
                         <div class="project-media">
                             <img src="${p.image}" alt="${p.title}">
                             <div class="hover-glow"></div>
@@ -1068,118 +465,118 @@
                         </div>
                     `;
 
-                    // Card Hover Glow Logic
-                    card.addEventListener('mousemove', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        card.style.setProperty('--mouse-x', `${x}px`);
-                        card.style.setProperty('--mouse-y', `${y}px`);
-                    });
-
-                    grid.appendChild(card);
+                // Card Hover Glow Logic
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
                 });
-                if (window.isAdmin) {
-                    document.querySelectorAll('.admin-actions').forEach(a => a.style.display = 'flex');
-                }
-            };
-            renderProjects();
 
-            // Admin Logic
-            window.isAdmin = false;
-            const adminTrigger = (e) => {
-                clickCount++;
-                if (clickCount >= 3) { // Lowered to 3 for easier access
-                    const pass = prompt("Enter Admin Password:");
-                    if (pass === "admin123") {
-                        window.isAdmin = true;
-                        alert("Admin Mode Activated!");
-                        document.getElementById('adminPanelTrigger').style.display = 'flex';
-                        document.getElementById('adminLoginLink').style.display = 'none';
-                        renderProjects();
-                    }
-                    clickCount = 0;
-                }
-            };
-            document.querySelector('footer p').addEventListener('click', adminTrigger);
-            document.getElementById('adminLoginLink').addEventListener('click', (e) => {
-                e.stopPropagation();
-                clickCount = 2; // Set to 2 so the next click (this one) triggers it
-                adminTrigger();
+                grid.appendChild(card);
             });
+            if (window.isAdmin) {
+                document.querySelectorAll('.admin-actions').forEach(a => a.style.display = 'flex');
+            }
+        };
+        renderProjects();
 
-            window.deleteProject = (id) => {
-                if (confirm("Are you sure?")) {
-                    projects = projects.filter(p => p.id !== id);
-                    localStorage.setItem('portfolio_projects', JSON.stringify(projects));
+        // Admin Logic
+        window.isAdmin = false;
+        const adminTrigger = (e) => {
+            clickCount++;
+            if (clickCount >= 3) { // Lowered to 3 for easier access
+                const pass = prompt("Enter Admin Password:");
+                if (pass === "admin123") {
+                    window.isAdmin = true;
+                    alert("Admin Mode Activated!");
+                    document.getElementById('adminPanelTrigger').style.display = 'flex';
+                    document.getElementById('adminLoginLink').style.display = 'none';
                     renderProjects();
                 }
-            };
+                clickCount = 0;
+            }
+        };
+        document.querySelector('footer p').addEventListener('click', adminTrigger);
+        document.getElementById('adminLoginLink').addEventListener('click', (e) => {
+            e.stopPropagation();
+            clickCount = 2; // Set to 2 so the next click (this one) triggers it
+            adminTrigger();
+        });
 
-            window.editProject = (id) => {
-                const p = projects.find(proj => proj.id === id);
-                document.getElementById('projId').value = p.id;
-                document.getElementById('projTitle').value = p.title;
-                document.getElementById('projImg').value = p.image;
-                document.getElementById('projCat').value = p.category;
-                document.getElementById('projTech').value = p.tech.join(', ');
-                document.getElementById('adminModal').style.display = 'flex';
-            };
-
-            window.addNewProject = () => {
-                document.getElementById('projId').value = '';
-                document.getElementById('adminForm').reset();
-                document.getElementById('adminModal').style.display = 'flex';
-            };
-
-            window.saveProject = (e) => {
-                e.preventDefault();
-                const id = document.getElementById('projId').value;
-                const newProj = {
-                    id: id ? parseInt(id) : Date.now(),
-                    title: document.getElementById('projTitle').value,
-                    image: document.getElementById('projImg').value,
-                    category: document.getElementById('projCat').value,
-                    tech: document.getElementById('projTech').value.split(',').map(t => t.trim())
-                };
-
-                if (id) {
-                    const idx = projects.findIndex(p => p.id === parseInt(id));
-                    projects[idx] = newProj;
-                } else {
-                    projects.push(newProj);
-                }
-
+        window.deleteProject = (id) => {
+            if (confirm("Are you sure?")) {
+                projects = projects.filter(p => p.id !== id);
                 localStorage.setItem('portfolio_projects', JSON.stringify(projects));
                 renderProjects();
-                document.getElementById('adminModal').style.display = 'none';
+            }
+        };
+
+        window.editProject = (id) => {
+            const p = projects.find(proj => proj.id === id);
+            document.getElementById('projId').value = p.id;
+            document.getElementById('projTitle').value = p.title;
+            document.getElementById('projImg').value = p.image;
+            document.getElementById('projCat').value = p.category;
+            document.getElementById('projTech').value = p.tech.join(', ');
+            document.getElementById('adminModal').style.display = 'flex';
+        };
+
+        window.addNewProject = () => {
+            document.getElementById('projId').value = '';
+            document.getElementById('adminForm').reset();
+            document.getElementById('adminModal').style.display = 'flex';
+        };
+
+        window.saveProject = (e) => {
+            e.preventDefault();
+            const id = document.getElementById('projId').value;
+            const newProj = {
+                id: id ? parseInt(id) : Date.now(),
+                title: document.getElementById('projTitle').value,
+                image: document.getElementById('projImg').value,
+                category: document.getElementById('projCat').value,
+                tech: document.getElementById('projTech').value.split(',').map(t => t.trim())
             };
 
-            window.exportHTML = () => {
-                const currentHTML = document.documentElement.outerHTML;
-                // Replace the default projects array in the source with the current projects
-                const projectString = JSON.stringify(projects, null, 4);
-                const scriptRegex = /let projects = JSON\.parse\(localStorage\.getItem\('portfolio_projects'\)\) \|\| \[[\s\S]*?\];/;
-                const newHTML = currentHTML.replace(scriptRegex, `let projects = JSON.parse(localStorage.getItem('portfolio_projects')) || ${projectString};`);
+            if (id) {
+                const idx = projects.findIndex(p => p.id === parseInt(id));
+                projects[idx] = newProj;
+            } else {
+                projects.push(newProj);
+            }
 
-                const blob = new Blob([newHTML], { type: 'text/html' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'index.html';
-                a.click();
-            };
+            localStorage.setItem('portfolio_projects', JSON.stringify(projects));
+            renderProjects();
+            document.getElementById('adminModal').style.display = 'none';
+        };
 
-            // Filters
-            const filters = document.querySelectorAll('.filter-btn');
-            filters.forEach(f => {
-                f.addEventListener('click', () => {
-                    filters.forEach(btn => btn.classList.remove('active'));
-                    f.classList.add('active');
-                    renderProjects(f.getAttribute('data-filter'));
-                });
+        window.exportHTML = () => {
+            const currentHTML = document.documentElement.outerHTML;
+            // Replace the default projects array in the source with the current projects
+            const projectString = JSON.stringify(projects, null, 4);
+            const scriptRegex = /let projects = JSON\.parse\(localStorage\.getItem\('portfolio_projects'\)\) \|\| \[[\s\S]*?\];/;
+            const newHTML = currentHTML.replace(scriptRegex, `let projects = JSON.parse(localStorage.getItem('portfolio_projects')) || ${projectString};`);
+
+            const blob = new Blob([newHTML], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'index.html';
+            a.click();
+        };
+
+        // Filters
+        const filters = document.querySelectorAll('.filter-btn');
+        filters.forEach(f => {
+            f.addEventListener('click', () => {
+                filters.forEach(btn => btn.classList.remove('active'));
+                f.classList.add('active');
+                renderProjects(f.getAttribute('data-filter'));
             });
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>
